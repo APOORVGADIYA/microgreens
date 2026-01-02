@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutri-Blooms - Lead Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #4a7c59;
+            --light-green: #7cb684;
+            --dark-green: #2d5a3d;
+            --cream: #f8f6f0;
+            --white: #ffffff;
+            --text-dark: #333;
+            --border: #ddd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+
+        .nav-links a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-green);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-green);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-green);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-green);
+        }
+
+        .btn-secondary {
+            background-color: var(--light-green);
+            color: var(--white);
+        }
+
+        .btn-link {
+            background: none;
+            color: var(--primary-green);
+            padding: 0;
+            text-decoration: underline;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--dark-green);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: var(--primary-green);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(74, 124, 89, 0.05);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 2rem 0;
+        }
+
+        .chart-bar {
+            background: var(--primary-green);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Utility */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                margin: 0 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page: Landing -->
+    <div id="landing-page">
+        <nav>
+            <div class="logo"> NutriBlooms</div>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('landing')">Home</a>
+                <a href="#" onclick="showPage('login')">Login</a>
+                <a href="#" onclick="showPage('register')">Register</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="hero">
+                <h1>Premium Quality Microgreens</h1>
+                <p>Growing a movement toward mindful eating and greener living</p>
+                <button class="btn btn-primary" onclick="showPage('register')">Get Started</button>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌿</div>
+                    <h3>100% Organic</h3>
+                    <p>Grown without pesticides or chemicals</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💚</div>
+                    <h3>Nutrient Rich</h3>
+                    <p>Packed with vitamins and minerals</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Sustainable</h3>
+                    <p>Promoting urban agriculture</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Register -->
+    <div id="register-page" class="hidden">
+        <nav>
+            <div class="logo">🌱 NutriBlooms</div>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('landing')">Home</a>
+                <a href="#" onclick="showPage('login')">Login</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="card" style="max-width: 500px; margin: 2rem auto;">
+                <h2 style="color: var(--dark-green); margin-bottom: 1.5rem;">Create Account</h2>
+
+                <div id="register-alert"></div>
+
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="reg-name">Full Name *</label>
+                        <input type="text" id="reg-name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-email">Email *</label>
+                        <input type="email" id="reg-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-phone">Phone Number *</label>
+                        <input type="tel" id="reg-phone" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">Password *</label>
+                        <input type="password" id="reg-password" minlength="6" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-confirm">Confirm Password *</label>
+                        <input type="password" id="reg-confirm" minlength="6" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-type">Account Type *</label>
+                        <select id="reg-type" required>
+                            <option value="user" selected>Customer</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+                </form>
+
+                <p class="text-center mt-2">
+                    Already have an account?
+                    <button class="btn btn-link" onclick="showPage('login')">Login here</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Login -->
+    <div id="login-page" class="hidden">
+        <nav>
+            <div class="logo"> NutriBlooms</div>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('landing')">Home</a>
+                <a href="#" onclick="showPage('register')">Register</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="card" style="max-width: 500px; margin: 2rem auto;">
+                <h2 style="color: var(--dark-green); margin-bottom: 1.5rem;">Login</h2>
+
+                <div id="login-alert"></div>
+
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                </form>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: #f0f7f0; border-radius: 5px;">
+                    <h4 style="color: var(--dark-green); margin-bottom: 0.5rem;">Demo Credentials:</h4>
+                    <p><strong>User:</strong> user@nutriblooms.in / password123</p>
+                    <p><strong>Admin:</strong> admin@nutriblooms.in / admin123</p>
+                </div>
+
+                <p class="text-center mt-2">
+                    Don't have an account?
+                    <button class="btn btn-link" onclick="showPage('register')">Register here</button>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: User Dashboard -->
+    <div id="user-dashboard" class="hidden">
+        <nav>
+            <div class="logo">🌱 NutriBlooms</div>
+            <div class="nav-links">
+                <span style="color: var(--primary-green); margin-right: 1rem;">Welcome, <span
+                        id="user-name">User</span>!</span>
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 style="color: var(--dark-green);">Customer Dashboard</h2>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="user-inquiries">0</div>
+                    <div class="stat-label">Your Inquiries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">11+</div>
+                    <div class="stat-label">Microgreen Varieties</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;">Submit Inquiry</h3>
+
+                <div id="inquiry-alert"></div>
+
+                <form onsubmit="handleInquiry(event)">
+                    <div class="form-group">
+                        <label for="inquiry-name">Full Name *</label>
+                        <input type="text" id="inquiry-name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiry-email">Email *</label>
+                        <input type="email" id="inquiry-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiry-phone">Phone Number *</label>
+                        <input type="tel" id="inquiry-phone" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiry-location">Location/City *</label>
+                        <input type="text" id="inquiry-location" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiry-product">Product Interest *</label>
+                        <select id="inquiry-product" required>
+                            <option value="">Select a product</option>
+                            <option value="Amaranth">Amaranth</option>
+                            <option value="Beets">Beets</option>
+                            <option value="Broccoli">Broccoli</option>
+                            <option value="Fenugreek">Fenugreek</option>
+                            <option value="Kale">Kale</option>
+                            <option value="Lettuce">Lettuce</option>
+                            <option value="Mustard">Mustard</option>
+                            <option value="White Radish">White Radish</option>
+                            <option value="Purple Radish">Purple Radish</option>
+                            <option value="Spinach">Spinach</option>
+                            <option value="Wheatgrass">Wheatgrass</option>
+                            <option value="Mixed Varieties">Mixed Varieties</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiry-budget">Budget Range *</label>
+                        <select id="inquiry-budget" required>
+                            <option value="">Select budget</option>
+                            <option value="Under 500">Under ₹500</option>
+                            <option value="500-1000">₹500 - ₹1000</option>
+                            <option value="1000-2000">₹1000 - ₹2000</option>
+                            <option value="2000-5000">₹2000 - ₹5000</option>
+                            <option value="Above 5000">Above ₹5000</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiry-quantity">Quantity/Frequency *</label>
+                        <select id="inquiry-quantity" required>
+                            <option value="">Select option</option>
+                            <option value="One-time purchase">One-time purchase</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Bi-weekly">Bi-weekly</option>
+                            <option value="Monthly">Monthly</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inquiry-message">Additional Message</label>
+                        <textarea id="inquiry-message" placeholder="Tell us more about your requirements..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit Inquiry</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;">Your Inquiry History</h3>
+                <div id="user-inquiry-list">
+                    <p style="color: #999; text-align: center;">No inquiries yet. Submit your first inquiry above!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page: Admin Dashboard -->
+    <div id="admin-dashboard" class="hidden">
+        <nav>
+            <div class="logo">🌱 NutriBlooms</div>
+            <div class="nav-links">
+                <span style="color: var(--primary-green); margin-right: 1rem;">Admin Panel</span>
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 style="color: var(--dark-green);">Admin Dashboard</h2>
+                <button class="btn btn-secondary" onclick="refreshAnalytics()">🔄 Refresh</button>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-leads">0</div>
+                    <div class="stat-label">Total Leads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="total-locations">0</div>
+                    <div class="stat-label">Unique Locations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avg-budget">₹0</div>
+                    <div class="stat-label">Avg. Budget</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="top-product">-</div>
+                    <div class="stat-label">Top Product</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;">Leads by Location</h3>
+                <canvas id="locationChart" style="max-height: 300px;"></canvas>
+                <div id="location-chart-display"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;">Budget Distribution</h3>
+                <canvas id="budgetChart" style="max-height: 300px;"></canvas>
+                <div id="budget-chart-display"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--dark-green); margin-bottom: 1.5rem;">All Leads</h3>
+                <div style="overflow-x: auto;">
+                    <table id="leads-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Product</th>
+                                <th>Budget</th>
+                                <th>Quantity</th>
+                                <th>Contact</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leads-tbody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: #999;">No leads yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        let currentUser = null;
+        let users = [
+            { email: 'user@nutriblooms.in', password: 'password123', name: 'Demo User', type: 'user' },
+            { email: 'admin@nutriblooms.in', password: 'admin123', name: 'Admin', type: 'admin' }
+        ];
+        let inquiries = [];
+
+        // Initialize with demo data
+        function initDemoData() {
+            inquiries = [
+                {
+                    date: '2026-01-01',
+                    name: 'Rajesh Kumar',
+                    email: 'rajesh@example.com',
+                    phone: '9876543210',
+                    location: 'Bengaluru',
+                    product: 'Broccoli',
+                    budget: '1000-2000',
+                    quantity: 'Weekly',
+                    message: 'Interested in regular supply'
+                },
+                {
+                    date: '2026-01-01',
+                    name: 'Priya Sharma',
+                    email: 'priya@example.com',
+                    phone: '9876543211',
+                    location: 'Mumbai',
+                    product: 'Kale',
+                    budget: '500-1000',
+                    quantity: 'Monthly',
+                    message: 'For personal use'
+                },
+                {
+                    date: '2026-01-02',
+                    name: 'Amit Patel',
+                    email: 'amit@example.com',
+                    phone: '9876543212',
+                    location: 'Bengaluru',
+                    product: 'Mixed Varieties',
+                    budget: '2000-5000',
+                    quantity: 'Bi-weekly',
+                    message: 'Restaurant bulk order'
+                },
+                {
+                    date: '2026-01-02',
+                    name: 'Sneha Reddy',
+                    email: 'sneha@example.com',
+                    phone: '9876543213',
+                    location: 'Hyderabad',
+                    product: 'Spinach',
+                    budget: 'Under 500',
+                    quantity: 'One-time purchase',
+                    message: 'Trial order'
+                }
+            ];
+        }
+
+        // Page Navigation
+        function showPage(page) {
+            const pages = ['landing-page', 'register-page', 'login-page', 'user-dashboard', 'admin-dashboard'];
+            pages.forEach(p => {
+                document.getElementById(p).classList.add('hidden');
+            });
+
+            if (page === 'user-dashboard') {
+                document.getElementById('user-dashboard').classList.remove('hidden');
+                loadUserDashboard();
+            } else if (page === 'admin-dashboard') {
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                loadAdminDashboard();
+            } else {
+                document.getElementById(page + '-page').classList.remove('hidden');
+            }
+        }
+
+        // Registration
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const phone = document.getElementById('reg-phone').value;
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+            const type = document.getElementById('reg-type').value;
+
+            const alertDiv = document.getElementById('register-alert');
+
+            if (password !== confirm) {
+                alertDiv.innerHTML = '<div class="alert alert-error">Passwords do not match!</div>';
+                return;
+            }
+
+            if (users.find(u => u.email === email)) {
+                alertDiv.innerHTML = '<div class="alert alert-error">Email already registered!</div>';
+                return;
+            }
+
+            users.push({ email, password, name, phone, type });
+            alertDiv.innerHTML = '<div class="alert alert-success">Registration successful! Redirecting to login...</div>';
+
+            setTimeout(() => {
+                showPage('login');
+                alertDiv.innerHTML = '';
+                e.target.reset();
+            }, 2000);
+        }
+
+        // Login
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const alertDiv = document.getElementById('login-alert');
+
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (!user) {
+                alertDiv.innerHTML = '<div class="alert alert-error">Invalid email or password!</div>';
+                return;
+            }
+
+            currentUser = user;
+            alertDiv.innerHTML = '';
+
+            if (user.type === 'admin') {
+                showPage('admin-dashboard');
+            } else {
+                showPage('user-dashboard');
+            }
+        }
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            showPage('landing');
+        }
+
+        // User Dashboard
+        function loadUserDashboard() {
+            if (currentUser) {
+                document.getElementById('user-name').textContent = currentUser.name;
+                const userInquiries = inquiries.filter(i => i.email === currentUser.email);
+                document.getElementById('user-inquiries').textContent = userInquiries.length;
+
+                // Pre-fill form
+                document.getElementById('inquiry-name').value = currentUser.name;
+                document.getElementById('inquiry-email').value = currentUser.email;
+                document.getElementById('inquiry-phone').value = currentUser.phone || '';
+
+                displayUserInquiries();
+            }
+        }
+
+        function handleInquiry(e) {
+            e.preventDefault();
+
+            const inquiry = {
+                date: new Date().toISOString().split('T')[0],
+                name: document.getElementById('inquiry-name').value,
+                email: document.getElementById('inquiry-email').value,
+                phone: document.getElementById('inquiry-phone').value,
+                location: document.getElementById('inquiry-location').value,
+                product: document.getElementById('inquiry-product').value,
+                budget: document.getElementById('inquiry-budget').value,
+                quantity: document.getElementById('inquiry-quantity').value,
+                message: document.getElementById('inquiry-message').value
+            };
+
+            inquiries.push(inquiry);
+
+            const alertDiv = document.getElementById('inquiry-alert');
+            alertDiv.innerHTML = '<div class="alert alert-success">Inquiry submitted successfully! We will contact you soon.</div>';
+
+            // Clear non-personal fields
+            document.getElementById('inquiry-location').value = '';
+            document.getElementById('inquiry-product').value = '';
+            document.getElementById('inquiry-budget').value = '';
+            document.getElementById('inquiry-quantity').value = '';
+            document.getElementById('inquiry-message').value = '';
+
+            loadUserDashboard();
+
+            setTimeout(() => {
+                alertDiv.innerHTML = '';
+            }, 3000);
+        }
+
+        function displayUserInquiries() {
+            const userInquiries = inquiries.filter(i => i.email === currentUser.email);
+            const listDiv = document.getElementById('user-inquiry-list');
+
+            if (userInquiries.length === 0) {
+                listDiv.innerHTML = '<p style="color: #999; text-align: center;">No inquiries yet. Submit your first inquiry above!</p>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Date</th><th>Product</th><th>Budget</th><th>Status</th></tr></thead><tbody>';
+            userInquiries.forEach(inq => {
+                html += `<tr>
+                    <td>${inq.date}</td>
+                    <td>${inq.product}</td>
+                    <td>₹${inq.budget}</td>
+                    <td style="color: var(--primary-green);">Pending Review</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            listDiv.innerHTML = html;
+        }
+
+        // Admin Dashboard
+        function loadAdminDashboard() {
+            updateStats();
+            displayLeadsTable();
+            displayCharts();
+        }
+
+        function updateStats() {
+            document.getElementById('total-leads').textContent = inquiries.length;
+
+            const locations = [...new Set(inquiries.map(i => i.location))];
+            document.getElementById('total-locations').textContent = locations.length;
+
+            // Calculate average budget
+            const budgetValues = {
+                'Under 500': 250,
+                '500-1000': 750,
+                '1000-2000': 1500,
+                '2000-5000': 3500,
+                'Above 5000': 7500
+            };
+            const avgBudget = inquiries.reduce((sum, i) => sum + (budgetValues[i.budget] || 0), 0) / (inquiries.length || 1);
+            document.getElementById('avg-budget').textContent = '₹' + Math.round(avgBudget);
+
+            // Top product
+            const productCounts = {};
+            inquiries.forEach(i => {
+                productCounts[i.product] = (productCounts[i.product] || 0) + 1;
+            });
+            const topProduct = Object.keys(productCounts).reduce((a, b) =>
+                productCounts[a] > productCounts[b] ? a : b, '-'
+            );
+            document.getElementById('top-product').textContent = topProduct;
+        }
+
+        function displayLeadsTable() {
+            const tbody = document.getElementById('leads-tbody');
+
+            if (inquiries.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: #999;">No leads yet</td></tr>';
+                return;
+            }
+
+            let html = '';
+            inquiries.slice().reverse().forEach(inq => {
+                html += `<tr>
+                    <td>${inq.date}</td>
+                    <td>${inq.name}</td>
+                    <td>${inq.location}</td>
+                    <td>${inq.product}</td>
+                    <td>₹${inq.budget}</td>
+                    <td>${inq.quantity}</td>
+                    <td>${inq.phone}<br><small>${inq.email}</small></td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function displayCharts() {
+            // Location Chart
+            const locationCounts = {};
+            inquiries.forEach(i => {
+                locationCounts[i.location] = (locationCounts[i.location] || 0) + 1;
+            });
+
+            const locationDiv = document.getElementById('location-chart-display');
+            let locationHtml = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+            const maxLocationCount = Math.max(...Object.values(locationCounts), 1);
+
+            Object.entries(locationCounts).sort((a, b) => b[1] - a[1]).forEach(([loc, count]) => {
+                const percentage = (count / maxLocationCount) * 100;
+                locationHtml += `
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span><strong>${loc}</strong></span>
+                            <span>${count} lead${count > 1 ? 's' : ''}</span>
+                        </div>
+                        <div style="background: #e0e0e0; border-radius: 5px; height: 25px; overflow: hidden;">
+                            <div style="background: var(--primary-green); height: 100%; width: ${percentage}%; transition: width 0.5s;"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            locationHtml += '</div>';
+            locationDiv.innerHTML = locationHtml;
+
+            // Budget Chart
+            const budgetCounts = {};
+            inquiries.forEach(i => {
+                budgetCounts[i.budget] = (budgetCounts[i.budget] || 0) + 1;
+            });
+
+            const budgetDiv = document.getElementById('budget-chart-display');
+            let budgetHtml = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+            const maxBudgetCount = Math.max(...Object.values(budgetCounts), 1);
+
+            const budgetOrder = ['Under 500', '500-1000', '1000-2000', '2000-5000', 'Above 5000'];
+            budgetOrder.forEach(budget => {
+                const count = budgetCounts[budget] || 0;
+                if (count > 0) {
+                    const percentage = (count / maxBudgetCount) * 100;
+                    budgetHtml += `
+                        <div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span><strong>₹${budget}</strong></span>
+                                <span>${count} lead${count > 1 ? 's' : ''}</span>
+                            </div>
+                            <div style="background: #e0e0e0; border-radius: 5px; height: 25px; overflow: hidden;">
+                                <div style="background: var(--light-green); height: 100%; width: ${percentage}%; transition: width 0.5s;"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            budgetHtml += '</div>';
+            budgetDiv.innerHTML = budgetHtml;
+        }
+
+        function refreshAnalytics() {
+            loadAdminDashboard();
+        }
+
+        // Initialize
+        initDemoData();
+        showPage('landing');
+    </script>
+</body>
+
+</html>
